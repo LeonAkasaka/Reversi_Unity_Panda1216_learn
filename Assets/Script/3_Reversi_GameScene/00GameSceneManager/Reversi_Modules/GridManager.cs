@@ -293,8 +293,8 @@ public class GridManager : MonoBehaviour
                 //選択したCPUのレベルによって置く石の座標を変える
                 var rerult = Enemy_AI_Level_Get(GameScene_Controller.Instance.MyEnemy_LEVEL);
 
-                x = rerult.c_x;
-                z = rerult.c_z;
+                x = rerult.X;
+                z = rerult.Z;
 
                 //石のターン処理を開始する
                 StartCoroutine(EnemyTurnCoroutin());

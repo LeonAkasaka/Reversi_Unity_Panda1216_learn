@@ -41,14 +41,14 @@ public class Enemy_AI : MonoBehaviour
     public TurnStone LEVEL2_Return_Stone(List<TurnStone> canputstone)
     {
         TurnStone rerult = canputstone[0];
-        var score = ScoreCount.Eva_Score[rerult.c_z, rerult.c_x];
+        var score = ScoreCount.Eva_Score[rerult.Z, rerult.X];
 
         foreach (var i in canputstone)
         {
 
-            if (score <= ScoreCount.Eva_Score[i.c_z, i.c_x])
+            if (score <= ScoreCount.Eva_Score[i.Z, i.X])
             {
-                score = ScoreCount.Eva_Score[i.c_z, i.c_x];
+                score = ScoreCount.Eva_Score[i.Z, i.X];
                 rerult = i;
             }
         }
@@ -82,13 +82,13 @@ public class Enemy_AI : MonoBehaviour
             LEV3_Undoist.Clear();
 
             //i番目の座標をターン
-            stones[i.c_z, i.c_x].StoneState = nowturn;
+            stones[i.Z, i.X].StoneState = nowturn;
 
             //ターンチェック
             bool can = true;
-            _TurnManager.TurnCheak(LEV3_TurnList, LEV3_Undoist, nowturn, i.c_x, i.c_z, stones, can);
+            _TurnManager.TurnCheak(LEV3_TurnList, LEV3_Undoist, nowturn, i.X, i.Z, stones, can);
 
-            Debug.Log("i_x=" + i.c_x + "i_y=" + i.c_z);
+            Debug.Log("i_x=" + i.X + "i_y=" + i.Z);
 
             //ターンした後に、
             bool cannot = false;
@@ -101,16 +101,16 @@ public class Enemy_AI : MonoBehaviour
             {
                 //スコアを採点する（第一手目をプラスしていく）
                 var score = ScoreCount.Return_Eve_Num(stones, nowturn);
-                var testscore = ScoreCount.Eva_Score[i.c_z, i.c_x];
+                var testscore = ScoreCount.Eva_Score[i.Z, i.X];
                 score += testscore;
 
                 //最も高得点の評価値を選びscoreにマイナスしたものをscoreに入れる
-                var stackscore = (-1 * ScoreCount.Eva_Score[k.c_z, k.c_x]);
+                var stackscore = (-1 * ScoreCount.Eva_Score[k.Z, k.X]);
                 // Debug.Log("マイナス　" + stackscore );
 
                 score += stackscore;
 
-                Debug.Log("k_x=" + k.c_x + "k_y=" + k.c_z + "  Score" + score);
+                Debug.Log("k_x=" + k.X + "k_y=" + k.Z + "  Score" + score);
 
                 //現在のスコアがrerultscoreよりも大きかったら
                 if (resultScore <= score)
@@ -119,18 +119,18 @@ public class Enemy_AI : MonoBehaviour
                     resultScore = score;
 
                     Debug.Log("リザルト：" + resultScore);
-                    Debug.Log("代入されました" + "x=" + k.c_x + "y=" + k.c_z + "  Score" + score);
+                    Debug.Log("代入されました" + "x=" + k.X + "y=" + k.Z + "  Score" + score);
 
                     //returnするクラスを更新する
                     rerult = i;
                 }
             }
 
-            var u = new TurnStone(i.c_z, i.c_x);
+            var u = new TurnStone(i.Z, i.X);
             Backstone(nowturn, LEV3_Undoist, stones, u, field);
         }
 
-        Debug.Log("最終リザルト" + "x=" + rerult.c_x + "y=" + rerult.c_z + "Score" + resultScore);
+        Debug.Log("最終リザルト" + "x=" + rerult.X + "y=" + rerult.Z + "Score" + resultScore);
         return rerult;
     }
 
@@ -150,11 +150,11 @@ public class Enemy_AI : MonoBehaviour
         //ひっくり返す前のターンに戻す
         foreach (var i in undolist)
         {
-            stones[i.c_z, i.c_x].StoneState = enemyStone;
+            stones[i.Z, i.X].StoneState = enemyStone;
         }
 
         //undoリストの情報から前の手に戻す
-        stones[undoxy.c_z, undoxy.c_x].StoneState = StoneState.CanTurn;
+        stones[undoxy.Z, undoxy.X].StoneState = StoneState.CanTurn;
 
         Enemy_Reset_Color(stones);
 

@@ -5,14 +5,14 @@ using static GridManager;
 //ひっくり返す座標をリストに入れる
 public class TurnStone
 {
-    public int c_z { get; }
-    public int c_x { get; }
+    public int Z { get; }
+    public int X { get; }
 
     //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
     public TurnStone(int z, int x)
     {
-        c_z = z;
-        c_x = x;
+        Z = z;
+        X = x;
     }
 }
 
@@ -88,8 +88,8 @@ public class TurnManager : MonoBehaviour
                             foreach (var canturn in list)
                             {
                                 //石の状態はCANTURNにする
-                                stones[canturn.c_z, canturn.c_x].StoneState = StoneState.CanTurn;
-                                fields[canturn.c_z, canturn.c_x].GetFieldStone = FirldState.CanTurn;
+                                stones[canturn.Z, canturn.X].StoneState = StoneState.CanTurn;
+                                fields[canturn.Z, canturn.X].GetFieldStone = FirldState.CanTurn;
                             }
                         }
                     }
@@ -156,10 +156,10 @@ public class TurnManager : MonoBehaviour
                 foreach (var canturn in turnlist)
                 {
                     //リストに入った石をTurnの色に変更する
-                    stones[canturn.c_z, canturn.c_x].StoneState = nowturn;
+                    stones[canturn.Z, canturn.X].StoneState = nowturn;
 
                     //敵AIリスト限定・元の手に戻せるようにひっくり返す座標を格納しておく
-                    if (enemyundo) undolist.Add(new TurnStone(canturn.c_z, canturn.c_x));
+                    if (enemyundo) undolist.Add(new TurnStone(canturn.Z, canturn.X));
                 }
             }
         }
