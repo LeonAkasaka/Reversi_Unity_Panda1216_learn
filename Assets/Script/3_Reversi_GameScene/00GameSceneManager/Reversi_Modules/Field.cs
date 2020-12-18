@@ -8,7 +8,7 @@ public class Field : MonoBehaviour
     [SerializeField]
     private MeshRenderer CanFirld;
 
-    public efirldState GetFieldStone
+    public FirldState GetFieldStone
     {
         get => FirldState;
         set
@@ -18,7 +18,7 @@ public class Field : MonoBehaviour
         }
     }
 
-    private efirldState FirldState;
+    private FirldState FirldState;
 
     /// <summary>
     /// オセロ盤のターン可能位置の状態を管理。CANTURNで赤いブロックが表示される。
@@ -27,10 +27,10 @@ public class Field : MonoBehaviour
     {
         switch (FirldState)
         {
-            case efirldState.NOTTURN:
+            case FirldState.NotTurn:
                 CanFirld.enabled = false;
                 break;
-            case efirldState.CANTURN:
+            case FirldState.CanTurn:
                 CanFirld.enabled = true;
                 CanFirld.material.color = Color.red;
                 break;
@@ -42,9 +42,9 @@ public class Field : MonoBehaviour
     /// </summary>
     public void Field_Reset()
     {
-        if (FirldState == efirldState.CANTURN)
+        if (FirldState == FirldState.CanTurn)
         {
-            FirldState = efirldState.NOTTURN;
+            FirldState = FirldState.NotTurn;
         }
     }
 }

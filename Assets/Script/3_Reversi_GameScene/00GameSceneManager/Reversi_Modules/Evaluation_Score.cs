@@ -26,28 +26,28 @@ public class Evaluation_Score : MonoBehaviour
     /// <param name="stone"></param>
     /// <param name="turn"></param>
     /// <returns></returns>
-    public int Return_Eve_Num(StoneColor[,] stone, estoneState turn)
+    public int Return_Eve_Num(StoneColor[,] stone, StoneState turn)
     {
         var score = 0;
 
-        if (turn == estoneState.BLACK)
+        if (turn == StoneState.Black)
         {
             for (var i = 0; i < cols; i++)
             {
                 for (var k = 0; k < rows; k++)
                 {
-                    if (stone[i, k].StoneState == estoneState.BLACK) score += Eva_Score[i, k];
+                    if (stone[i, k].StoneState == StoneState.Black) score += Eva_Score[i, k];
                 }
             }
             return score;
         }
-        else if (turn == estoneState.WHITE)
+        else if (turn == StoneState.White)
         {
             for (var i = 0; i < cols; i++)
             {
                 for (var k = 0; k < rows; k++)
                 {
-                    if (stone[i, k].StoneState == estoneState.WHITE) score += Eva_Score[i, k];
+                    if (stone[i, k].StoneState == StoneState.White) score += Eva_Score[i, k];
                 }
             }
         }
@@ -60,7 +60,7 @@ public class Evaluation_Score : MonoBehaviour
     /// <param name="stonemanager"></param>
     /// <param name="Myturn"></param>
     /// <returns></returns>
-    public int StoneCount(StoneColor[,] stonemanager, estoneState Myturn)
+    public int StoneCount(StoneColor[,] stonemanager, StoneState Myturn)
     {
         var resultscore = 0;
 
@@ -84,10 +84,10 @@ public class Evaluation_Score : MonoBehaviour
     /// <param name="stonemanager"></param>
     /// <param name="Myturn"></param>
     /// <returns></returns>
-    public bool All_Stone_Color_Count_Check(StoneColor[,] stonemanager, estoneState nowturn)
+    public bool All_Stone_Color_Count_Check(StoneColor[,] stonemanager, StoneState nowturn)
     {
         bool result = true;
-        estoneState notturn = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState notturn = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         for (var i = 0; i < cols; i++)
         {

@@ -14,7 +14,7 @@ public class TurnManager : MonoBehaviour
         public int c_x;
 
         //ひっくり返したときのターンの保存
-        public estoneState ENEMY_;
+        public StoneState ENEMY_;
 
         //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
         public Turnstone_c(int z, int x)
@@ -25,7 +25,7 @@ public class TurnManager : MonoBehaviour
         }
 
         //コンストラクタ・敵のUndoリスト生成
-        public Turnstone_c(int z, int x, estoneState ENEMY)
+        public Turnstone_c(int z, int x, StoneState ENEMY)
         {
             c_z = z;
             c_x = x;
@@ -45,12 +45,12 @@ public class TurnManager : MonoBehaviour
     /// <param name="list"></param>
     /// <param name="fields"></param>
     /// <param name="stones"></param>
-    public void TurnColorListGet(estoneState nowturn, List<Turnstone_c> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
+    public void TurnColorListGet(StoneState nowturn, List<Turnstone_c> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
     {
         //ターン制御
         bool CanTurnColor;
 
-        estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         for (var i = 0; i < Turn_CHECK_Z.Length; i++)
         {
@@ -87,7 +87,7 @@ public class TurnManager : MonoBehaviour
                             if (!(x_plus >= 0 && x_plus < rows && z_plus >= 0 && z_plus < cols)) break;
 
                             //現在の座標位置を+2方向した位置の石の状態がEMPTYだったら
-                            if (stones[z1, x1].StoneState == enemyStone && stones[z_plus, x_plus].StoneState == estoneState.EMPTY)
+                            if (stones[z1, x1].StoneState == enemyStone && stones[z_plus, x_plus].StoneState == StoneState.Empty)
                             {
 
                                 //EMPTYの位置をリストに保存
@@ -106,8 +106,8 @@ public class TurnManager : MonoBehaviour
                             foreach (var canturn in list)
                             {
                                 //石の状態はCANTURNにする
-                                stones[canturn.c_z, canturn.c_x].StoneState = estoneState.CANTURN;
-                                fields[canturn.c_z, canturn.c_x].GetFieldStone = efirldState.CANTURN;
+                                stones[canturn.c_z, canturn.c_x].StoneState = StoneState.CanTurn;
+                                fields[canturn.c_z, canturn.c_x].GetFieldStone = FirldState.CanTurn;
                             }
                         }
                     }
@@ -124,12 +124,12 @@ public class TurnManager : MonoBehaviour
     /// <param name="list"></param>
     /// <param name="fields"></param>
     /// <param name="stones"></param>
-    public void TurnCheak(List<Turnstone_c> turnlist, List<Turnstone_c> undolist, estoneState nowturn, int x, int y, StoneColor[,] stones, bool enemyundo)
+    public void TurnCheak(List<Turnstone_c> turnlist, List<Turnstone_c> undolist, StoneState nowturn, int x, int y, StoneColor[,] stones, bool enemyundo)
     {
         bool CanTurn_;
 
         //MyTurnではない色
-        estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         for (var i = 0; i < Turn_CHECK_X.Length; i++)
         {
@@ -163,7 +163,7 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 }//もし、何も置かれていない石であればbreakする
-                else if (stones[stonez, stonex].StoneState == estoneState.EMPTY)
+                else if (stones[stonez, stonex].StoneState == StoneState.Empty)
                 {
                     break;
                 }

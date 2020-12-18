@@ -64,10 +64,10 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     /// <param name="nowturn"></param>
     /// <returns></returns>
-    public Turnstone_c LEVEL3_Return_Stone(List<Turnstone_c> canputstone, StoneColor[,] stones, Field[,] field, estoneState nowturn)
+    public Turnstone_c LEVEL3_Return_Stone(List<Turnstone_c> canputstone, StoneColor[,] stones, Field[,] field, StoneState nowturn)
     {
         //反対の石
-        estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         Turnstone_c rerult = canputstone[0];
 
@@ -142,10 +142,10 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     /// <param name="undoxy"></param>
     /// <param name="field"></param>
-    public void Backstone(estoneState nowturn, List<Turnstone_c> undolist, StoneColor[,] stones, Turnstone_c undoxy, Field[,] field)
+    public void Backstone(StoneState nowturn, List<Turnstone_c> undolist, StoneColor[,] stones, Turnstone_c undoxy, Field[,] field)
     {
         //反対のターン情報を変数に代入する
-        estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         //ひっくり返す前のターンに戻す
         foreach (var i in undolist)
@@ -154,7 +154,7 @@ public class Enemy_AI : MonoBehaviour
         }
 
         //undoリストの情報から前の手に戻す
-        stones[undoxy.c_z, undoxy.c_x].StoneState = estoneState.CANTURN;
+        stones[undoxy.c_z, undoxy.c_x].StoneState = StoneState.CanTurn;
 
         Enemy_Reset_Color(stones);
 
@@ -174,7 +174,7 @@ public class Enemy_AI : MonoBehaviour
         {
             for (var k = 0; k < GridManager.rows; k++)
             {
-                if (stones[i, k].StoneState == estoneState.CANTURN) CanTurnList.Add(new Turnstone_c(i, k));
+                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new Turnstone_c(i, k));
             }
         }
     }
@@ -185,7 +185,7 @@ public class Enemy_AI : MonoBehaviour
         {
             for (var k = 0; k < GridManager.rows; k++)
             {
-                if (stones[i, k].StoneState == estoneState.CANTURN) CanTurnList.Add(new Turnstone_c(i, k));
+                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new Turnstone_c(i, k));
             }
         }
     }

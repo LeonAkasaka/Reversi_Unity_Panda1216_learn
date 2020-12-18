@@ -9,7 +9,7 @@ public class StoneColor : MonoBehaviour
     private MeshRenderer _Stone;
 
     // プロパティ
-    public estoneState StoneState
+    public StoneState StoneState
     {
         get => _stoneState;
         set
@@ -19,26 +19,26 @@ public class StoneColor : MonoBehaviour
         }
     }
 
-    private estoneState _stoneState;
+    private StoneState _stoneState;
 
     private void ChangeStoneColor()
     {
         switch (StoneState)
         {
-            case estoneState.EMPTY:
+            case StoneState.Empty:
                 _Stone.enabled = false;
                 break;
 
-            case estoneState.CANTURN:
+            case StoneState.CanTurn:
                 _Stone.enabled = false;
                 break;
 
-            case estoneState.BLACK:
+            case StoneState.Black:
                 _Stone.enabled = true;
                 _Stone.material.color = Color.black;
                 break;
 
-            case estoneState.WHITE:
+            case StoneState.White:
                 _Stone.enabled = true;
                 _Stone.material.color = Color.white;
                 break;
@@ -47,6 +47,6 @@ public class StoneColor : MonoBehaviour
 
     public void StoneColor_Reset()
     {
-        if (StoneState == estoneState.CANTURN) StoneState = estoneState.EMPTY;
+        if (StoneState == StoneState.CanTurn) StoneState = StoneState.Empty;
     }
 }

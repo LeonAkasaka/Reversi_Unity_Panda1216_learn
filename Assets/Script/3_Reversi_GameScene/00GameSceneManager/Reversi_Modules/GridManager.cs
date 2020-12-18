@@ -6,32 +6,32 @@ using static TurnManager;
 /// <summary>
 /// 石の色の状態管理
 /// </summary>
-public enum estoneState
+public enum StoneState
 {
-    EMPTY,
-    BLACK,
-    WHITE,
-    CANTURN,
+    Empty,
+    Black,
+    White,
+    CanTurn,
 }
 
 /// <summary>
 /// オセロ盤のターン可能位置を表示用の状態管理
 /// </summary>
-public enum efirldState
+public enum FirldState
 {
-    CANTURN,
-    NOTTURN,
+    CanTurn,
+    NotTurn,
 }
 
 /// <summary>
 /// CPUのレベル（playerprefで所得）
 /// </summary>
-public enum eLevelState
+public enum LevelState
 { //難易度1～3
 
-    LEVEL_1,
-    LEVEL_2,
-    LEVEL_3,
+    Level1,
+    Level2,
+    Level3,
 }
 
 /// <summary>
@@ -145,7 +145,7 @@ public class GridManager : MonoBehaviour
                 stone.name = "Stone" + i + "  " + k;
 
                 _StoneManager[i, k] = stone.GetComponent<StoneColor>();
-                _StoneManager[i, k].StoneState = estoneState.EMPTY;
+                _StoneManager[i, k].StoneState = StoneState.Empty;
 
                 //ターン可能位置の配置
                 var field = Instantiate(_FieldPrefab, new Vector3(k, i, 20), Quaternion.Euler(0, 0, 0));
@@ -159,15 +159,15 @@ public class GridManager : MonoBehaviour
                 field.name = "field" + i + "  " + k;
 
                 _FieldManager[i, k] = field.GetComponent<Field>();
-                _FieldManager[i, k].GetFieldStone = efirldState.NOTTURN;
+                _FieldManager[i, k].GetFieldStone = FirldState.NotTurn;
             }
         }
 
         //初期配置
-        _StoneManager[4, 3].StoneState = estoneState.WHITE;
-        _StoneManager[4, 4].StoneState = estoneState.BLACK;
-        _StoneManager[3, 3].StoneState = estoneState.BLACK;
-        _StoneManager[3, 4].StoneState = estoneState.WHITE;
+        _StoneManager[4, 3].StoneState = StoneState.White;
+        _StoneManager[4, 4].StoneState = StoneState.Black;
+        _StoneManager[3, 3].StoneState = StoneState.Black;
+        _StoneManager[3, 4].StoneState = StoneState.White;
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ public class GridManager : MonoBehaviour
                 z = (int)z_w;
 
                 //タップした座標の石の状態が置ける状態であれば
-                if (_StoneManager[z, x].StoneState == estoneState.CANTURN)
+                if (_StoneManager[z, x].StoneState == StoneState.CanTurn)
                 {
                     //盤内であれば
                     if (x >= 0 && x < rows && z >= 0 && z < cols)
@@ -270,7 +270,7 @@ public class GridManager : MonoBehaviour
 
         //CPUのターンへ
         GameScene_Controller.Instance.MyTurn =
-            ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+            ((GameScene_Controller.Instance.MyTurn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         _UI_Managaer._Select_UI_Now();
 
@@ -341,7 +341,7 @@ public class GridManager : MonoBehaviour
 
         //プレイヤーのターンへ
         GameScene_Controller.Instance.MyTurn =
-            ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+            ((GameScene_Controller.Instance.MyTurn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         _UI_Managaer._Select_UI_Now();
         EnemyColutinWaiting = false;
@@ -359,7 +359,7 @@ public class GridManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         GameScene_Controller.Instance.MyTurn =
-           ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+           ((GameScene_Controller.Instance.MyTurn == StoneState.Black) ? StoneState.White : StoneState.Black);
         _UI_Managaer.SkipOFF();
 
         SkipColutinWaiting = false;
@@ -370,25 +370,25 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="level"></param>
     /// <returns></returns>
-    public Turnstone_c Enemy_AI_Level_Get(eLevelState level)
+    public Turnstone_c Enemy_AI_Level_Get(LevelState level)
     {
         Turnstone_c result = null;
 
         switch (level)
         {
-            case eLevelState.LEVEL_1:
+            case LevelState.Level1:
 
                 result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
                 Debug.Log("レベル1");
                 break;
 
-            case eLevelState.LEVEL_2:
+            case LevelState.Level2:
 
                 result = _Enemy_AI.LEVEL2_Return_Stone(_TurnColorList);
                 Debug.Log("レベル2");
                 break;
 
-            case eLevelState.LEVEL_3:
+            case LevelState.Level3:
 
                 result = _Enemy_AI.LEVEL3_Return_Stone(_TurnColorList, _StoneManager, _FieldManager, GameScene_Controller.Instance.MyTurn);
                 Debug.Log("レベル3");
@@ -414,7 +414,7 @@ public class GridManager : MonoBehaviour
             for (var k = 0; k < rows; k++)
             {
                 _StoneManager[i, k].StoneColor_Reset();
-                _FieldManager[i, k].GetFieldStone = efirldState.NOTTURN;
+                _FieldManager[i, k].GetFieldStone = FirldState.NotTurn;
             }
         }
     }
@@ -423,10 +423,10 @@ public class GridManager : MonoBehaviour
     /// 試合終了フラグの確認・現在置かれている石のチェック（64個置かれていたら終了）
     /// 置かれてる石がすべて同じ色だったら終了チェック。
     /// </summary>
-    public void Play_End_Cheack(estoneState nowturn)
+    public void Play_End_Cheack(StoneState nowturn)
     {
         //自分が選んでいない石のターン
-        estoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         //Playre
         Player_Stone_Count = _Evaluation_Score_Count.StoneCount(_StoneManager, GameScene_Controller.Instance.Choiceng_Stone);
@@ -461,7 +461,7 @@ public class GridManager : MonoBehaviour
     public void IsPutting_Stone_Check()
     {
         //選んでない色の石のターン
-        estoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
+        StoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         //PlayerとCPU両方で置くことができる石の状態を検索・検索したplayer_puttingcancheckをに入れる
         bool can = true;
@@ -526,12 +526,12 @@ public class GridManager : MonoBehaviour
             {
                 if (k % 2 == 0)
                 {
-                    _StoneManager[i, k].StoneState = estoneState.BLACK;
+                    _StoneManager[i, k].StoneState = StoneState.Black;
 
                 }
                 else
                 {
-                    _StoneManager[i, k].StoneState = estoneState.WHITE;
+                    _StoneManager[i, k].StoneState = StoneState.White;
                 }
                 //_StoneManager[i, k].StoneState = estoneState.BLACK;
             }
