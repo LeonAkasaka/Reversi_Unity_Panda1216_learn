@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static TurnManager;
 
 /// <summary>
 /// 石の色の状態管理

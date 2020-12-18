@@ -2,37 +2,36 @@
 using UnityEngine;
 using static GridManager;
 
+//ひっくり返す座標をリストに入れる
+public class Turnstone_c
+{
+    public int c_z;
+    public int c_x;
+
+    //ひっくり返したときのターンの保存
+    public StoneState ENEMY_;
+
+    //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
+    public Turnstone_c(int z, int x)
+    {
+        c_z = z;
+        c_x = x;
+    }
+
+    //コンストラクタ・敵のUndoリスト生成
+    public Turnstone_c(int z, int x, StoneState ENEMY)
+    {
+        c_z = z;
+        c_x = x;
+        ENEMY_ = ENEMY;
+    }
+}
+
 /// <summary>
 /// 石のターンを管理するクラス
 /// </summary>
 public class TurnManager : MonoBehaviour
 {
-    //ひっくり返す座標をリストに入れる
-    public class Turnstone_c
-    {
-        public int c_z;
-        public int c_x;
-
-        //ひっくり返したときのターンの保存
-        public StoneState ENEMY_;
-
-        //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
-        public Turnstone_c(int z, int x)
-        {
-            c_z = z;
-            c_x = x;
-
-        }
-
-        //コンストラクタ・敵のUndoリスト生成
-        public Turnstone_c(int z, int x, StoneState ENEMY)
-        {
-            c_z = z;
-            c_x = x;
-            ENEMY_ = ENEMY;
-        }
-    }
-
     //タップした石からの8方向の確認をする
     private int[] Turn_CHECK_X = new int[] { -1, -1, 0, 1, 1, 1, 0, -1 };
     private int[] Turn_CHECK_Z = new int[] { 0, 1, 1, 1, 0, -1, -1, -1 };
