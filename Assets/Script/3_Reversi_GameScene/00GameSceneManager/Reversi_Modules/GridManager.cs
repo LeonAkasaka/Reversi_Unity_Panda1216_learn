@@ -50,8 +50,8 @@ public class GridManager : MonoBehaviour
     private StoneColor[,] _StoneManager = new StoneColor[cols, rows];
 
     //8*8生成用
-    public static int cols = 8;
-    public static int rows = 8;
+    public static int cols { get; } = 8;
+    public static int rows { get; } = 8;
 
 
     /// <summary>
