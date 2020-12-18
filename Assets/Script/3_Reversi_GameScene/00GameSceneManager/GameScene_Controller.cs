@@ -11,12 +11,7 @@ using UnityEngine;
 /// </summary>
 public class GameScene_Controller : MonoBehaviour
 {
-    public static GameScene_Controller Instance
-    {
-        get { return instance; }
-    }
-
-    static GameScene_Controller instance;
+    public static GameScene_Controller Instance { get; private set; }
 
     [SerializeField]
     private GridManager _GridManeger;
@@ -52,7 +47,7 @@ public class GameScene_Controller : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     void Start()
@@ -60,67 +55,55 @@ public class GameScene_Controller : MonoBehaviour
         //AIレベル選定　playerPrefで所得
         _CPU_Level_Load = PlayerPrefs.GetInt(SaveData_Manager.KEY_CPU_LEVEL, 0);
 
-        Instance.MyEnemy_LEVEL = (LevelState)_CPU_Level_Load;
+        MyEnemy_LEVEL = (LevelState)_CPU_Level_Load;
 
         //先行か後攻用　playPrefで所得
         _Select_Stone_Load = PlayerPrefs.GetInt(SaveData_Manager.KEY_STONE_SELECT, 0);
-        Instance.Choice_Stone_Color = (StoneState)_Select_Stone_Load;
+        Choice_Stone_Color = (StoneState)_Select_Stone_Load;
 
         //先行か後攻かの判定
-        if (Instance.Choice_Stone_Color == StoneState.Black) { Instance.MyTurn = StoneState.Black; }
-        if (Instance.Choice_Stone_Color == StoneState.White) { Instance.MyTurn = StoneState.White; }
+        if (Choice_Stone_Color == StoneState.Black) { MyTurn = StoneState.Black; }
+        if (Choice_Stone_Color == StoneState.White) { MyTurn = StoneState.White; }
 
-        Instance.Choiceng_Stone = Instance.MyTurn;
+        Choiceng_Stone = MyTurn;
 
         //PlayerPrefs.DeleteAll();
 
 
         //勝負判定を1回のみ行いたいのでUniRxを使用
         this.UpdateAsObservable()
-        .Where(_ => Instance.Player_Win == true)
+        .Where(_ => Player_Win == true)
         .Take(1)
         .Subscribe(onNext_ =>
         {
-
-
-            Instance.Game_Player_Win();
+            Game_Player_Win();
             Debug.Log("UniRx通過");
-
         });
 
         this.UpdateAsObservable()
-        .Where(_ => Instance.Player_Lose == true)
+        .Where(_ => Player_Lose == true)
         .Take(1)
         .Subscribe(onNext_ =>
         {
-
-
-            Instance.Game_Player_Lose();
+            Game_Player_Lose();
             Debug.Log("UniRx通過");
-
         });
 
         this.UpdateAsObservable()
-        .Where(_ => Instance.Player_Draw == true)
+        .Where(_ => Player_Draw == true)
         .Take(1)
         .Subscribe(onNext_ =>
         {
-
-
-            Instance.Game_Player_Lose();
+            Game_Player_Lose();
             Debug.Log("UniRx通過");
-
         });
-
 
         //プレイヤーが白を選んだら1ターンスキップする
-        if (Instance.MyTurn == StoneState.White)
+        if (MyTurn == StoneState.White)
         {
-
-            Instance.MyTurn =
-                ((Instance.MyTurn == StoneState.Black) ?
+            MyTurn =
+                ((MyTurn == StoneState.Black) ?
                 StoneState.White : StoneState.Black);
-
         }
 
         //リバーシ盤・石の生成
@@ -131,37 +114,27 @@ public class GameScene_Controller : MonoBehaviour
         _UIManager._Select_UI_Now();
 
         // _GridManeger.Play_End_Cheack(Instance.MyTurn);
-
-
     }
-
-
 
     void Update()
     {
-
         //ターン進行管理
-        if (Instance.Choiceng_Stone == Instance.MyTurn)
+        if (Choiceng_Stone == MyTurn)
         {
             //自分が選択した色のターン
             _GridManeger.Player_Now_Turn();
-
         }
         else
         {
             //CPUターン
             _GridManeger.Enemy_Now_Turn();
-
         }
-
-
-
     }
 
     //勝敗キーの書き込み・セーブ処理
     public void Game_Player_Win()
     {
-        if (GameScene_Controller.Instance.Choice_Stone_Color == StoneState.Black)
+        if (Choice_Stone_Color == StoneState.Black)
         {
             var blackwin = PlayerPrefs.GetInt("BLACKWIN", 0);
 
@@ -169,7 +142,7 @@ public class GameScene_Controller : MonoBehaviour
             PlayerPrefs.SetInt("BLACKWIN", blackwin);
 
         }
-        else if (GameScene_Controller.Instance.Choice_Stone_Color == StoneState.White)
+        else if (Choice_Stone_Color == StoneState.White)
         {
             var whitewin = PlayerPrefs.GetInt("WHITEWIN", 0);
             whitewin++;
