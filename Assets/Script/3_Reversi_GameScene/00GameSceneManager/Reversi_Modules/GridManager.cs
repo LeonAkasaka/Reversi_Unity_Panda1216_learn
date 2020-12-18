@@ -37,7 +37,6 @@ public class GridManager : MonoBehaviour
         LEVEL_1,
         LEVEL_2,
         LEVEL_3,
-
     }
 
     /// <summary>
@@ -125,16 +124,13 @@ public class GridManager : MonoBehaviour
     private int Player_Stone_Count;
     private int CPU_Stone_Count;
 
-
     /// <summary>
     /// 石とターン可能位置の生成
     /// </summary>
     public void Grid_Prefab_Module_Make()
     {
-
         for (var i = 0; i < cols; i++)
         {
-
             for (var k = 0; k < rows; k++)
             {
                 //石の生成
@@ -245,7 +241,6 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-
     }
 
     /// <summary>
@@ -503,7 +498,6 @@ public class GridManager : MonoBehaviour
             all_stone_player_same = true;
             GameScene_Controller.Instance.Player_Win = true;
             _UI_Managaer.Player_Win();
-
         }
         else if (Player_Stone_Count < CPU_Stone_Count)
         {
@@ -511,11 +505,9 @@ public class GridManager : MonoBehaviour
             all_stone_CPU_same = true;
             GameScene_Controller.Instance.Player_Lose = true;
             _UI_Managaer.Player_Lose();
-
         }
         else
         {
-
             Debug.Log("ドロー");
             all_stone_Draw_same = true;
             GameScene_Controller.Instance.Player_Draw = true;
@@ -528,13 +520,11 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void funcWHITE()
     {
-
         for (var i = 0; i < cols; i++)
         {
             //石の配置
             for (var k = 0; k < rows; k++)
             {
-
                 if (k % 2 == 0)
                 {
                     _StoneManager[i, k].StoneState = estoneState.BLACK;
@@ -542,17 +532,10 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-
-
                     _StoneManager[i, k].StoneState = estoneState.WHITE;
-
                 }
-
-
                 //_StoneManager[i, k].StoneState = estoneState.BLACK;
-
             }
-
         }
 
         Play_End_Cheack(GameScene_Controller.Instance.MyTurn);
