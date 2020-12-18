@@ -3,16 +3,14 @@
 /// <summary>
 /// 石の色を管理するクラス
 /// </summary>
-
-
 public class StoneColor : MonoBehaviour
 {
     [SerializeField]
     private MeshRenderer _Stone;
- 
+
     // プロパティ
     public GridManager.estoneState StoneState
-    { 
+    {
         get => _stoneState;
         set
         {
@@ -27,7 +25,6 @@ public class StoneColor : MonoBehaviour
     {
         switch (StoneState)
         {
-
             case GridManager.estoneState.EMPTY:
                 _Stone.enabled = false;
                 break;
@@ -45,19 +42,11 @@ public class StoneColor : MonoBehaviour
                 _Stone.enabled = true;
                 _Stone.material.color = Color.white;
                 break;
-
-
         }
-
-
     }
 
-    public void StoneColor_Reset() {
-
+    public void StoneColor_Reset()
+    {
         if (StoneState == GridManager.estoneState.CANTURN) StoneState = GridManager.estoneState.EMPTY;
-       
     }
-
-
-
 }

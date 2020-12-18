@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UniRx;
+﻿using UniRx;
 using UniRx.Triggers;
-using System;
+using UnityEngine;
+
 /// <summary>
 /// ゲームシーン制御クラス
 /// プレイ開始前のオプション画面で下記情報をPlayerPrefで受け取り変数に代入する
@@ -9,11 +9,10 @@ using System;
 /// ・ターン進行
 /// ・CPUのAIレベル
 /// </summary>
-
-
 public class GameScene_Controller : MonoBehaviour
 {
-    public static GameScene_Controller Instance {
+    public static GameScene_Controller Instance
+    {
 
         get { return instance; }
     }
@@ -52,16 +51,17 @@ public class GameScene_Controller : MonoBehaviour
     private int _CPU_Level_Load;
 
 
-    void Awake() {
+    void Awake()
+    {
 
         instance = this;
-        
+
     }
 
     void Start()
     {
         //AIレベル選定　playerPrefで所得
-         _CPU_Level_Load =PlayerPrefs.GetInt(SaveData_Manager.KEY_CPU_LEVEL, 0);
+        _CPU_Level_Load = PlayerPrefs.GetInt(SaveData_Manager.KEY_CPU_LEVEL, 0);
 
         Instance.MyEnemy_LEVEL = (GridManager.eLevelState)_CPU_Level_Load;
 
@@ -72,7 +72,7 @@ public class GameScene_Controller : MonoBehaviour
         //先行か後攻かの判定
         if (Instance.Choice_Stone_Color == GridManager.estoneState.BLACK) { Instance.MyTurn = GridManager.estoneState.BLACK; }
         if (Instance.Choice_Stone_Color == GridManager.estoneState.WHITE) { Instance.MyTurn = GridManager.estoneState.WHITE; }
-      
+
         Instance.Choiceng_Stone = Instance.MyTurn;
 
         //PlayerPrefs.DeleteAll();
@@ -82,7 +82,8 @@ public class GameScene_Controller : MonoBehaviour
         this.UpdateAsObservable()
         .Where(_ => Instance.Player_Win == true)
         .Take(1)
-        .Subscribe(onNext_ => {
+        .Subscribe(onNext_ =>
+        {
 
 
             Instance.Game_Player_Win();
@@ -93,7 +94,8 @@ public class GameScene_Controller : MonoBehaviour
         this.UpdateAsObservable()
         .Where(_ => Instance.Player_Lose == true)
         .Take(1)
-        .Subscribe(onNext_ => {
+        .Subscribe(onNext_ =>
+        {
 
 
             Instance.Game_Player_Lose();
@@ -104,7 +106,8 @@ public class GameScene_Controller : MonoBehaviour
         this.UpdateAsObservable()
         .Where(_ => Instance.Player_Draw == true)
         .Take(1)
-        .Subscribe(onNext_ => {
+        .Subscribe(onNext_ =>
+        {
 
 
             Instance.Game_Player_Lose();
@@ -116,11 +119,11 @@ public class GameScene_Controller : MonoBehaviour
         //プレイヤーが白を選んだら1ターンスキップする
         if (Instance.MyTurn == GridManager.estoneState.WHITE)
         {
-     
-            Instance.MyTurn = 
-                ((Instance.MyTurn == GridManager.estoneState.BLACK) ? 
+
+            Instance.MyTurn =
+                ((Instance.MyTurn == GridManager.estoneState.BLACK) ?
                 GridManager.estoneState.WHITE : GridManager.estoneState.BLACK);
-         
+
         }
 
         //リバーシ盤・石の生成
@@ -130,12 +133,12 @@ public class GameScene_Controller : MonoBehaviour
 
         _UIManager._Select_UI_Now();
 
-       // _GridManeger.Play_End_Cheack(Instance.MyTurn);
+        // _GridManeger.Play_End_Cheack(Instance.MyTurn);
 
 
     }
 
-  
+
 
     void Update()
     {
@@ -154,46 +157,47 @@ public class GameScene_Controller : MonoBehaviour
 
         }
 
-        
-     
+
+
     }
 
     //勝敗キーの書き込み・セーブ処理
-    public void Game_Player_Win() {
+    public void Game_Player_Win()
+    {
 
-       
-            if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.BLACK)
-            {
-                var blackwin = PlayerPrefs.GetInt("BLACKWIN", 0);
 
-                blackwin++;
-                PlayerPrefs.SetInt("BLACKWIN", blackwin);
+        if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.BLACK)
+        {
+            var blackwin = PlayerPrefs.GetInt("BLACKWIN", 0);
 
-            }
-            else if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.WHITE)
-            {
+            blackwin++;
+            PlayerPrefs.SetInt("BLACKWIN", blackwin);
 
-                var whitewin = PlayerPrefs.GetInt("WHITEWIN", 0);
-                whitewin++;
-                PlayerPrefs.SetInt("WHITEWIN", whitewin);
+        }
+        else if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.WHITE)
+        {
 
-            }
+            var whitewin = PlayerPrefs.GetInt("WHITEWIN", 0);
+            whitewin++;
+            PlayerPrefs.SetInt("WHITEWIN", whitewin);
 
-            var esaplus = PlayerPrefs.GetInt("ESA", 0);
-            esaplus += 3;
+        }
 
-            PlayerPrefs.SetInt("ESA", esaplus);
+        var esaplus = PlayerPrefs.GetInt("ESA", 0);
+        esaplus += 3;
+
+        PlayerPrefs.SetInt("ESA", esaplus);
 
 
     }
 
     public void Game_Player_Lose()
     {
-      
-            var esaplus = PlayerPrefs.GetInt("ESA", 0);
-            esaplus += 1;
 
-            PlayerPrefs.SetInt("ESA", esaplus);
+        var esaplus = PlayerPrefs.GetInt("ESA", 0);
+        esaplus += 1;
+
+        PlayerPrefs.SetInt("ESA", esaplus);
 
 
     }

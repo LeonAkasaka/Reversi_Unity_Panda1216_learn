@@ -5,10 +5,8 @@ using static GridManager;
 /// <summary>
 /// 石のターンを管理するクラス
 /// </summary>
-
 public class TurnManager : MonoBehaviour
 {
-  
     //ひっくり返す座標をリストに入れる
     public class Turnstone_c
     {
@@ -25,15 +23,14 @@ public class TurnManager : MonoBehaviour
             c_x = x;
 
         }
+
         //コンストラクタ・敵のUndoリスト生成
         public Turnstone_c(int z, int x, estoneState ENEMY)
         {
             c_z = z;
             c_x = x;
             ENEMY_ = ENEMY;
-
         }
-
     }
 
     //タップした石からの8方向の確認をする
@@ -48,29 +45,24 @@ public class TurnManager : MonoBehaviour
     /// <param name="list"></param>
     /// <param name="fields"></param>
     /// <param name="stones"></param>
-    public void TurnColorListGet(estoneState nowturn, List<Turnstone_c> list,Field[,] fields, StoneColor[,] stones,bool stonecheck)
+    public void TurnColorListGet(estoneState nowturn, List<Turnstone_c> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
     {
-        
         //ターン制御
         bool CanTurnColor;
-  
+
         estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
 
         for (var i = 0; i < Turn_CHECK_Z.Length; i++)
         {
-
             for (var k = 0; k < Turn_CHECK_X.Length; k++)
             {
-
                 //石がTurnの色と一致したら
                 if (stones[i, k].StoneState == nowturn)
                 {
                     for (var p = 0; p < Turn_CHECK_X.Length; p++)
                     {
-
                         var z1 = i;
                         var x1 = k;
-
 
                         CanTurnColor = false;
 
@@ -79,13 +71,11 @@ public class TurnManager : MonoBehaviour
                         //MyTurn位置を中心に8方向（画面端）に検索をかける
                         while (true)
                         {
-
                             z1 += Turn_CHECK_Z[p];
                             x1 += Turn_CHECK_X[p];
 
                             var z_plus = z1 + Turn_CHECK_Z[p];
                             var x_plus = x1 + Turn_CHECK_X[p];
-
 
                             //現在の座標位置を+1方向した位置が盤外だったらbreak
                             if (!(x1 >= 0 && x1 < rows && z1 >= 0 && z1 < cols)) break;
@@ -99,44 +89,32 @@ public class TurnManager : MonoBehaviour
                             //現在の座標位置を+2方向した位置の石の状態がEMPTYだったら
                             if (stones[z1, x1].StoneState == enemyStone && stones[z_plus, x_plus].StoneState == estoneState.EMPTY)
                             {
-                                
-                                 //EMPTYの位置をリストに保存
-                                 list.Add(new Turnstone_c(z_plus, x_plus));
+
+                                //EMPTYの位置をリストに保存
+                                list.Add(new Turnstone_c(z_plus, x_plus));
 
                                 CanTurnColor = true;
                                 break;
 
                             }//+2方向した位置がMyTurnと逆の色であれば検索をつづける
-                            else if (stones[z1, x1].StoneState == enemyStone) { continue; }                          
-                            else{break;}
-
+                            else if (stones[z1, x1].StoneState == enemyStone) { continue; }
+                            else { break; }
                         }
 
                         if (!stonecheck)
                         {
-                            foreach (var canturn in list) { 
-                                
+                            foreach (var canturn in list)
+                            {
                                 //石の状態はCANTURNにする
-                               stones[canturn.c_z, canturn.c_x].StoneState = estoneState.CANTURN;
-                               fields[canturn.c_z, canturn.c_x].GetFieldStone = efirldState.CANTURN;
-                           
-
+                                stones[canturn.c_z, canturn.c_x].StoneState = estoneState.CANTURN;
+                                fields[canturn.c_z, canturn.c_x].GetFieldStone = efirldState.CANTURN;
                             }
-
                         }
-                   
                     }
-
                 }
-
             }
-
-
         }
-
-
     }
-
 
     /// <summary>
     /// タップした座標から8方向チェックし、ターンできる石がある場合はリストに格納し、まとめてターンをする
@@ -148,13 +126,10 @@ public class TurnManager : MonoBehaviour
     /// <param name="stones"></param>
     public void TurnCheak(List<Turnstone_c> turnlist, List<Turnstone_c> undolist, estoneState nowturn, int x, int y, StoneColor[,] stones, bool enemyundo)
     {
-
-     
         bool CanTurn_;
 
         //MyTurnではない色
         estoneState enemyStone = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
-
 
         for (var i = 0; i < Turn_CHECK_X.Length; i++)
         {
@@ -169,17 +144,15 @@ public class TurnManager : MonoBehaviour
             //全8方向・1方向ずつ石の状態を確認する
             while (true)
             {
-                
                 stonez += Turn_CHECK_Z[i];
                 stonex += Turn_CHECK_X[i];
 
                 //座標がxが0以下で、8より大きかったらwhileからbreakする
                 if (!(stonex >= 0 && stonex < rows && stonez >= 0 && stonez < cols)) break;
-              
+
                 //もし、enemystoneがあったらリストに格納する
                 if (stones[stonez, stonex].StoneState == enemyStone)
                 {
-
                     turnlist.Add(new Turnstone_c(stonez, stonex));
 
                 }//MyTurnの色と一致する石であれば
@@ -192,18 +165,12 @@ public class TurnManager : MonoBehaviour
                 }//もし、何も置かれていない石であればbreakする
                 else if (stones[stonez, stonex].StoneState == estoneState.EMPTY)
                 {
-
                     break;
-
                 }
-
             }
 
-
-          
             if (CanTurn_)
             {
-
                 foreach (var canturn in turnlist)
                 {
                     //リストに入った石をTurnの色に変更する
@@ -211,26 +178,8 @@ public class TurnManager : MonoBehaviour
 
                     //敵AIリスト限定・元の手に戻せるようにひっくり返す座標を格納しておく
                     if (enemyundo) undolist.Add(new Turnstone_c(canturn.c_z, canturn.c_x, nowturn));
-                   
-
                 }
-
-
             }
-
-
-
-
         }
-
-
-
     }
-
-
-
-
-
-
-
 }

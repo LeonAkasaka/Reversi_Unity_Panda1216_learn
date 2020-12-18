@@ -6,28 +6,24 @@ using static TurnManager;
 /// <summary>
 /// オセロ盤の管理クラス
 /// </summary>
-
 public class GridManager : MonoBehaviour
-{   
-    
+{
     /// <summary>
     /// 石の色の状態管理
     /// </summary>
     public enum estoneState
-    {   
+    {
         EMPTY,
         BLACK,
         WHITE,
         CANTURN,
-
     }
 
     /// <summary>
     /// オセロ盤のターン可能位置を表示用の状態管理
     /// </summary>
     public enum efirldState
-    {   
-
+    {
         CANTURN,
         NOTTURN,
     }
@@ -56,7 +52,7 @@ public class GridManager : MonoBehaviour
     private StoneColor[,] _StoneManager = new StoneColor[cols, rows];
 
     //8*8生成用
-    public static int cols = 8;    
+    public static int cols = 8;
     public static int rows = 8;
 
 
@@ -66,9 +62,9 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject _FieldPrefab;
 
-    private Field[,] _FieldManager = new Field[cols,rows];
+    private Field[,] _FieldManager = new Field[cols, rows];
 
-   
+
     /// <summary>
     /// 石のターン用
     /// </summary>
@@ -101,7 +97,7 @@ public class GridManager : MonoBehaviour
 
     private bool SkipColutinWaiting = false;
 
-   
+
     /// <summary>
     /// UI管理用
     /// </summary>
@@ -120,9 +116,9 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private Enemy_AI _Enemy_AI;
 
-   /// <summary>
-   /// 評価値管理用
-   /// </summary>
+    /// <summary>
+    /// 評価値管理用
+    /// </summary>
     [SerializeField]
     private Evaluation_Score _Evaluation_Score_Count;
 
@@ -136,10 +132,10 @@ public class GridManager : MonoBehaviour
     public void Grid_Prefab_Module_Make()
     {
 
-        for (var i = 0; i <cols; i++)
+        for (var i = 0; i < cols; i++)
         {
-           
-            for (var k = 0; k <rows; k++)
+
+            for (var k = 0; k < rows; k++)
             {
                 //石の生成
                 var stone = Instantiate(_StonePrefab);
@@ -147,9 +143,9 @@ public class GridManager : MonoBehaviour
                 stone.transform.parent = _Canvas.transform;
 
                 //ボードの大きさと石の大きさをあわせるために微調整
-                stone.transform.localPosition = new Vector3(k+(k*0.3f), 0, i+(i*0.2f));
+                stone.transform.localPosition = new Vector3(k + (k * 0.3f), 0, i + (i * 0.2f));
                 stone.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-                stone.transform.Rotate(new Vector3(-90,0,0));
+                stone.transform.Rotate(new Vector3(-90, 0, 0));
 
                 stone.name = "Stone" + i + "  " + k;
 
@@ -169,11 +165,7 @@ public class GridManager : MonoBehaviour
 
                 _FieldManager[i, k] = field.GetComponent<Field>();
                 _FieldManager[i, k].GetFieldStone = efirldState.NOTTURN;
-
             }
-
-            
-
         }
 
         //初期配置
@@ -181,65 +173,58 @@ public class GridManager : MonoBehaviour
         _StoneManager[4, 4].StoneState = estoneState.BLACK;
         _StoneManager[3, 3].StoneState = estoneState.BLACK;
         _StoneManager[3, 4].StoneState = estoneState.WHITE;
-        
     }
-
 
     /// <summary>
     /// プレイヤーターン進行用
     /// </summary>
-    public void Player_Now_Turn() {
-
+    public void Player_Now_Turn()
+    {
         //コルーチンの処理の際は停止をさせる※不具合原因になりやすいフラグにつき改善していきたい
-        if (!CoroutineWaiting) {
-
+        if (!CoroutineWaiting)
+        {
             //石を置ける状態を検索する
             bool cannot = false;
-            _TurnManager.TurnColorListGet(GameScene_Controller.Instance.MyTurn, _TurnColorList, _FieldManager,_StoneManager, cannot);
+            _TurnManager.TurnColorListGet(GameScene_Controller.Instance.MyTurn, _TurnColorList, _FieldManager, _StoneManager, cannot);
 
             //TurnColorListに入れる
             _Enemy_AI.Enemy_Stone_Select(_TurnColorList, _StoneManager);
 
             //TurnColorListはNULL
-            if (!(_TurnColorList != null && _TurnColorList.Count > 0)) {
-
+            if (!(_TurnColorList != null && _TurnColorList.Count > 0))
+            {
                 if (!all_stone_player_same && !all_stone_CPU_same) StartCoroutine(SkipCoroutin());
-
             }
-
-
         }
 
         //デバッグモード用
-        if (Input.GetKey(KeyCode.A)) {
-
+        if (Input.GetKey(KeyCode.A))
+        {
             funcWHITE();
-
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-
-                var x_w =hit.collider.gameObject.transform.localPosition.x;             
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                var x_w = hit.collider.gameObject.transform.localPosition.x;
                 var z_w = hit.collider.gameObject.transform.localPosition.z;
 
                 //座標補正
-                if (x_w <= 1) { x_w = 0; }    
-                else {x_w -= x_w*0.2f; }
+                if (x_w <= 1) { x_w = 0; }
+                else { x_w -= x_w * 0.2f; }
 
                 z_w -= z_w * 0.1f;
-               
+
                 x = (int)x_w;
                 z = (int)z_w;
 
                 //タップした座標の石の状態が置ける状態であれば
-                if (_StoneManager[z, x].StoneState == estoneState.CANTURN) {
-
-                   //盤内であれば
+                if (_StoneManager[z, x].StoneState == estoneState.CANTURN)
+                {
+                    //盤内であれば
                     if (x >= 0 && x < rows && z >= 0 && z < cols)
                     {
                         //タップ座標の石を置く
@@ -247,7 +232,6 @@ public class GridManager : MonoBehaviour
 
                         //石のターン処理を開始する
                         StartCoroutine(PlayerTurnCoroutin());
-
                     }
                     else
                     {
@@ -257,18 +241,9 @@ public class GridManager : MonoBehaviour
 
                             if (!all_stone_player_same && !all_stone_CPU_same && !all_stone_Draw_same) StartCoroutine(SkipCoroutin());
                         }
-
-
                     }
-
-
                 }
-
-
             }
-
- 
-        
         }
 
     }
@@ -279,12 +254,11 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator PlayerTurnCoroutin()
     {
-
         //非同期処理の間、唯一性を保つための処理
         if (CoroutineWaiting) yield break;
-       
+
         CoroutineWaiting = true;
-              
+
         Reset_Color();
 
         SoundManager.Instance.SE_Stone_Tap_Play();
@@ -296,59 +270,50 @@ public class GridManager : MonoBehaviour
         SoundManager.Instance.SE_Stone_Turn();
         yield return new WaitForSeconds(0.3f);
 
- 
         Play_End_Cheack(GameScene_Controller.Instance.MyTurn);
 
         yield return new WaitForSeconds(0.3f);
-    
 
         //CPUのターンへ
         GameScene_Controller.Instance.MyTurn =
             ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
-     
+
         _UI_Managaer._Select_UI_Now();
 
-
         CoroutineWaiting = false;
-
     }
 
     /// <summary>
     /// CPUtターン進行用
     /// </summary>
-    public void Enemy_Now_Turn() {
-
-        if (!EnemyColutinWaiting) {
-
+    public void Enemy_Now_Turn()
+    {
+        if (!EnemyColutinWaiting)
+        {
             bool cannot = false;
             _TurnManager.TurnColorListGet(GameScene_Controller.Instance.MyTurn, _TurnList, _FieldManager, _StoneManager, cannot);
             _Enemy_AI.Enemy_Stone_Select(_TurnColorList, _StoneManager);
-            
+
             //NULLチェック            
             if (_TurnColorList != null && _TurnColorList.Count > 0)
             {
                 //選択したCPUのレベルによって置く石の座標を変える
                 var rerult = Enemy_AI_Level_Get(GameScene_Controller.Instance.MyEnemy_LEVEL);
-      
+
                 x = rerult.c_x;
                 z = rerult.c_z;
 
                 //石のターン処理を開始する
                 StartCoroutine(EnemyTurnCoroutin());
-
             }
-            else {
-
-                if (!SkipColutinWaiting) {
-                
-                if (!all_stone_player_same && !all_stone_CPU_same && !all_stone_Draw_same) StartCoroutine(SkipCoroutin());
+            else
+            {
+                if (!SkipColutinWaiting)
+                {
+                    if (!all_stone_player_same && !all_stone_CPU_same && !all_stone_Draw_same) StartCoroutine(SkipCoroutin());
                 }
-                
-                
             }
-
         }
-
     }
 
     /// <summary>
@@ -357,13 +322,12 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator EnemyTurnCoroutin()
     {
-
-        if (EnemyColutinWaiting)yield break;
+        if (EnemyColutinWaiting) yield break;
 
         EnemyColutinWaiting = true;
 
         Reset_Color();
-       
+
         yield return new WaitForSeconds(1.0f);
         SoundManager.Instance.SE_Stone_Tap_Play();
         _StoneManager[z, x].StoneState = GameScene_Controller.Instance.MyTurn;
@@ -371,32 +335,29 @@ public class GridManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         //石のターンチェックをする
-        bool cannot = false; 
+        bool cannot = false;
         _TurnManager.TurnCheak(_TurnList, _UndoList, GameScene_Controller.Instance.MyTurn, x, z, _StoneManager, cannot);
         SoundManager.Instance.SE_Stone_Turn();
 
         yield return new WaitForSeconds(0.3f);
 
         Play_End_Cheack(GameScene_Controller.Instance.MyTurn);
-      
+
         yield return new WaitForSeconds(0.3f);
 
         //プレイヤーのターンへ
-        GameScene_Controller.Instance.MyTurn = 
+        GameScene_Controller.Instance.MyTurn =
             ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
 
         _UI_Managaer._Select_UI_Now();
         EnemyColutinWaiting = false;
-
-
     }
-
 
     /// <summary>
     /// スキップ処理のコルーチン
     /// </summary>
-    private IEnumerator SkipCoroutin() {
-
+    private IEnumerator SkipCoroutin()
+    {
         if (SkipColutinWaiting) yield break;
 
         SkipColutinWaiting = true;
@@ -407,12 +368,8 @@ public class GridManager : MonoBehaviour
            ((GameScene_Controller.Instance.MyTurn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
         _UI_Managaer.SkipOFF();
 
-
         SkipColutinWaiting = false;
-
     }
-
-
 
     /// <summary>
     /// 選択したCPUのAIレベルに応じた座標配置を行う
@@ -421,11 +378,10 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     public Turnstone_c Enemy_AI_Level_Get(eLevelState level)
     {
-
         Turnstone_c result = null;
 
-        switch (level) {
-
+        switch (level)
+        {
             case eLevelState.LEVEL_1:
 
                 result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
@@ -440,7 +396,7 @@ public class GridManager : MonoBehaviour
 
             case eLevelState.LEVEL_3:
 
-                result = _Enemy_AI.LEVEL3_Return_Stone(_TurnColorList, _StoneManager, _FieldManager,GameScene_Controller.Instance.MyTurn);
+                result = _Enemy_AI.LEVEL3_Return_Stone(_TurnColorList, _StoneManager, _FieldManager, GameScene_Controller.Instance.MyTurn);
                 Debug.Log("レベル3");
                 break;
 
@@ -448,19 +404,16 @@ public class GridManager : MonoBehaviour
                 result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
                 Debug.Log("レベルが未選択エラー");
                 break;
-
         }
 
         return result;
     }
-
 
     /// <summary>
     /// （MyTurn）ターン遷移時に石・フィールドの状態をリセットする
     /// </summary>
     public void Reset_Color()
     {
-
         for (var i = 0; i < cols; i++)
         {
             //石の配置
@@ -469,21 +422,18 @@ public class GridManager : MonoBehaviour
                 _StoneManager[i, k].StoneColor_Reset();
                 _FieldManager[i, k].GetFieldStone = efirldState.NOTTURN;
             }
-
         }
-
-
     }
 
     /// <summary>
     /// 試合終了フラグの確認・現在置かれている石のチェック（64個置かれていたら終了）
     /// 置かれてる石がすべて同じ色だったら終了チェック。
     /// </summary>
-    public void Play_End_Cheack(estoneState nowturn) {
-
+    public void Play_End_Cheack(estoneState nowturn)
+    {
         //自分が選んでいない石のターン
         estoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
-        
+
         //Playre
         Player_Stone_Count = _Evaluation_Score_Count.StoneCount(_StoneManager, GameScene_Controller.Instance.Choiceng_Stone);
 
@@ -493,7 +443,7 @@ public class GridManager : MonoBehaviour
 
         all_stone_CPU_same = _Evaluation_Score_Count.All_Stone_Color_Count_Check(_StoneManager, notchoisestone);
 
-         var score = Player_Stone_Count + CPU_Stone_Count;
+        var score = Player_Stone_Count + CPU_Stone_Count;
 
         if (score >= cols * rows)
         {
@@ -501,23 +451,21 @@ public class GridManager : MonoBehaviour
 
             Win_Lose_Rerult();
         }
-        else {
+        else
+        {
 
             Debug.Log("PLAYER" + Player_Stone_Count + "ENEMY" + CPU_Stone_Count);
-        
+
         }
 
         IsPutting_Stone_Check();
-
-
     }
-
 
     /// <summary>
     /// 64個以下だが、置ける場所がない場合ゲームの終了処理を行う
     /// </summary>
-    public void IsPutting_Stone_Check() {
-
+    public void IsPutting_Stone_Check()
+    {
         //選んでない色の石のターン
         estoneState notchoisestone = ((GameScene_Controller.Instance.Choiceng_Stone == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
 
@@ -528,31 +476,25 @@ public class GridManager : MonoBehaviour
         _TurnManager.TurnColorListGet(notchoisestone, player_puttingcancheck, _FieldManager, _StoneManager, can);
 
         _Enemy_AI.Enemy_Stone_Select_Check(player_puttingcancheck, _StoneManager);
-      
-       
+
         //リストになにもはいっていなかったら勝敗判定を出す
         if (!(player_puttingcancheck != null && player_puttingcancheck.Count > 0))
-
         {
             Win_Lose_Rerult();
         }
-        else {
-           
+        else
+        {
             //リストに入っていたら、リストをクリアする
             player_puttingcancheck.Clear();
             CPU_puttingcancheck.Clear();
-
         }
-
     }
-
 
     /// <summary>
     /// 勝敗判定
     /// </summary>
-    public void Win_Lose_Rerult() {
-
-
+    public void Win_Lose_Rerult()
+    {
         Debug.Log("試合終了フラグ");
 
         if (Player_Stone_Count > CPU_Stone_Count)
@@ -579,15 +521,13 @@ public class GridManager : MonoBehaviour
             GameScene_Controller.Instance.Player_Draw = true;
             _UI_Managaer.Player_Draw();
         }
-
-
     }
-
 
     /// <summary>
     /// デバッグメニュー、全部黒にする
     /// </summary>
-    public void  funcWHITE() {
+    public void funcWHITE()
+    {
 
         for (var i = 0; i < cols; i++)
         {
@@ -616,12 +556,5 @@ public class GridManager : MonoBehaviour
         }
 
         Play_End_Cheack(GameScene_Controller.Instance.MyTurn);
-
     }
-
-  
-   
-
-
-
 }
