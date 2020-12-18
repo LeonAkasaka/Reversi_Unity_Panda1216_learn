@@ -31,19 +31,14 @@ public class GameScene_Controller : MonoBehaviour
     [SerializeField]
     private UI_Managaer _UIManager;
 
-    //石のカウント
-    private int StoneCount;
-
     //クリアフラグ
     public bool Player_Win = false;
     public bool Player_Lose = false;
     public bool Player_Draw = false;
 
-
     //データ保存用変数
     private int _Select_Stone_Load;
     private int _CPU_Level_Load;
-
 
     void Awake()
     {
