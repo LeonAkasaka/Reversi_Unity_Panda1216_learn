@@ -13,7 +13,6 @@ public class GameScene_Controller : MonoBehaviour
 {
     public static GameScene_Controller Instance
     {
-
         get { return instance; }
     }
 
@@ -23,16 +22,16 @@ public class GameScene_Controller : MonoBehaviour
     private GridManager _GridManeger;
 
     //ターン進行管理
-    public GridManager.estoneState MyTurn;
+    public estoneState MyTurn;
 
     //AIのレベル管理
-    public GridManager.eLevelState MyEnemy_LEVEL;
+    public eLevelState MyEnemy_LEVEL;
 
     //白・黒どちらの色を選択したか
-    public GridManager.estoneState Choice_Stone_Color;
+    public estoneState Choice_Stone_Color;
 
     //Choice_Stone_Colorで選択した色をMyTurnに代入するための変数
-    public GridManager.estoneState Choiceng_Stone;
+    public estoneState Choiceng_Stone;
 
     [SerializeField]
     private UI_Managaer _UIManager;
@@ -53,9 +52,7 @@ public class GameScene_Controller : MonoBehaviour
 
     void Awake()
     {
-
         instance = this;
-
     }
 
     void Start()
@@ -63,15 +60,15 @@ public class GameScene_Controller : MonoBehaviour
         //AIレベル選定　playerPrefで所得
         _CPU_Level_Load = PlayerPrefs.GetInt(SaveData_Manager.KEY_CPU_LEVEL, 0);
 
-        Instance.MyEnemy_LEVEL = (GridManager.eLevelState)_CPU_Level_Load;
+        Instance.MyEnemy_LEVEL = (eLevelState)_CPU_Level_Load;
 
         //先行か後攻用　playPrefで所得
         _Select_Stone_Load = PlayerPrefs.GetInt(SaveData_Manager.KEY_STONE_SELECT, 0);
-        Instance.Choice_Stone_Color = (GridManager.estoneState)_Select_Stone_Load;
+        Instance.Choice_Stone_Color = (estoneState)_Select_Stone_Load;
 
         //先行か後攻かの判定
-        if (Instance.Choice_Stone_Color == GridManager.estoneState.BLACK) { Instance.MyTurn = GridManager.estoneState.BLACK; }
-        if (Instance.Choice_Stone_Color == GridManager.estoneState.WHITE) { Instance.MyTurn = GridManager.estoneState.WHITE; }
+        if (Instance.Choice_Stone_Color == estoneState.BLACK) { Instance.MyTurn = estoneState.BLACK; }
+        if (Instance.Choice_Stone_Color == estoneState.WHITE) { Instance.MyTurn = estoneState.WHITE; }
 
         Instance.Choiceng_Stone = Instance.MyTurn;
 
@@ -117,12 +114,12 @@ public class GameScene_Controller : MonoBehaviour
 
 
         //プレイヤーが白を選んだら1ターンスキップする
-        if (Instance.MyTurn == GridManager.estoneState.WHITE)
+        if (Instance.MyTurn == estoneState.WHITE)
         {
 
             Instance.MyTurn =
-                ((Instance.MyTurn == GridManager.estoneState.BLACK) ?
-                GridManager.estoneState.WHITE : GridManager.estoneState.BLACK);
+                ((Instance.MyTurn == estoneState.BLACK) ?
+                estoneState.WHITE : estoneState.BLACK);
 
         }
 
@@ -164,9 +161,7 @@ public class GameScene_Controller : MonoBehaviour
     //勝敗キーの書き込み・セーブ処理
     public void Game_Player_Win()
     {
-
-
-        if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.BLACK)
+        if (GameScene_Controller.Instance.Choice_Stone_Color == estoneState.BLACK)
         {
             var blackwin = PlayerPrefs.GetInt("BLACKWIN", 0);
 
@@ -174,36 +169,24 @@ public class GameScene_Controller : MonoBehaviour
             PlayerPrefs.SetInt("BLACKWIN", blackwin);
 
         }
-        else if (GameScene_Controller.Instance.Choice_Stone_Color == GridManager.estoneState.WHITE)
+        else if (GameScene_Controller.Instance.Choice_Stone_Color == estoneState.WHITE)
         {
-
             var whitewin = PlayerPrefs.GetInt("WHITEWIN", 0);
             whitewin++;
             PlayerPrefs.SetInt("WHITEWIN", whitewin);
-
         }
 
         var esaplus = PlayerPrefs.GetInt("ESA", 0);
         esaplus += 3;
 
         PlayerPrefs.SetInt("ESA", esaplus);
-
-
     }
 
     public void Game_Player_Lose()
     {
-
         var esaplus = PlayerPrefs.GetInt("ESA", 0);
         esaplus += 1;
 
         PlayerPrefs.SetInt("ESA", esaplus);
-
-
     }
-
-
-
-
-
 }

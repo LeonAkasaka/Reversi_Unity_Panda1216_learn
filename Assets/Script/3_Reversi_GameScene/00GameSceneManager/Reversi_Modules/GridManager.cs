@@ -4,41 +4,41 @@ using UnityEngine;
 using static TurnManager;
 
 /// <summary>
+/// 石の色の状態管理
+/// </summary>
+public enum estoneState
+{
+    EMPTY,
+    BLACK,
+    WHITE,
+    CANTURN,
+}
+
+/// <summary>
+/// オセロ盤のターン可能位置を表示用の状態管理
+/// </summary>
+public enum efirldState
+{
+    CANTURN,
+    NOTTURN,
+}
+
+/// <summary>
+/// CPUのレベル（playerprefで所得）
+/// </summary>
+public enum eLevelState
+{ //難易度1～3
+
+    LEVEL_1,
+    LEVEL_2,
+    LEVEL_3,
+}
+
+/// <summary>
 /// オセロ盤の管理クラス
 /// </summary>
 public class GridManager : MonoBehaviour
 {
-    /// <summary>
-    /// 石の色の状態管理
-    /// </summary>
-    public enum estoneState
-    {
-        EMPTY,
-        BLACK,
-        WHITE,
-        CANTURN,
-    }
-
-    /// <summary>
-    /// オセロ盤のターン可能位置を表示用の状態管理
-    /// </summary>
-    public enum efirldState
-    {
-        CANTURN,
-        NOTTURN,
-    }
-
-    /// <summary>
-    /// CPUのレベル（playerprefで所得）
-    /// </summary>
-    public enum eLevelState
-    { //難易度1～3
-
-        LEVEL_1,
-        LEVEL_2,
-        LEVEL_3,
-    }
-
     /// <summary>
     /// 石の管理用
     /// </summary>
@@ -62,7 +62,6 @@ public class GridManager : MonoBehaviour
     private GameObject _FieldPrefab;
 
     private Field[,] _FieldManager = new Field[cols, rows];
-
 
     /// <summary>
     /// 石のターン用

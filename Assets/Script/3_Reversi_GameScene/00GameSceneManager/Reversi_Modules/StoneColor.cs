@@ -9,7 +9,7 @@ public class StoneColor : MonoBehaviour
     private MeshRenderer _Stone;
 
     // プロパティ
-    public GridManager.estoneState StoneState
+    public estoneState StoneState
     {
         get => _stoneState;
         set
@@ -19,26 +19,26 @@ public class StoneColor : MonoBehaviour
         }
     }
 
-    private GridManager.estoneState _stoneState;
+    private estoneState _stoneState;
 
     private void ChangeStoneColor()
     {
         switch (StoneState)
         {
-            case GridManager.estoneState.EMPTY:
+            case estoneState.EMPTY:
                 _Stone.enabled = false;
                 break;
 
-            case GridManager.estoneState.CANTURN:
+            case estoneState.CANTURN:
                 _Stone.enabled = false;
                 break;
 
-            case GridManager.estoneState.BLACK:
+            case estoneState.BLACK:
                 _Stone.enabled = true;
                 _Stone.material.color = Color.black;
                 break;
 
-            case GridManager.estoneState.WHITE:
+            case estoneState.WHITE:
                 _Stone.enabled = true;
                 _Stone.material.color = Color.white;
                 break;
@@ -47,6 +47,6 @@ public class StoneColor : MonoBehaviour
 
     public void StoneColor_Reset()
     {
-        if (StoneState == GridManager.estoneState.CANTURN) StoneState = GridManager.estoneState.EMPTY;
+        if (StoneState == estoneState.CANTURN) StoneState = estoneState.EMPTY;
     }
 }

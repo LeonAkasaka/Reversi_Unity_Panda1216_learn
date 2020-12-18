@@ -26,30 +26,28 @@ public class Evaluation_Score : MonoBehaviour
     /// <param name="stone"></param>
     /// <param name="turn"></param>
     /// <returns></returns>
-    public int Return_Eve_Num(StoneColor[,] stone, GridManager.estoneState turn)
+    public int Return_Eve_Num(StoneColor[,] stone, estoneState turn)
     {
         var score = 0;
 
-        if (turn == GridManager.estoneState.BLACK)
+        if (turn == estoneState.BLACK)
         {
             for (var i = 0; i < cols; i++)
             {
                 for (var k = 0; k < rows; k++)
                 {
-                    if (stone[i, k].StoneState ==
-GridManager.estoneState.BLACK) score += Eva_Score[i, k];
+                    if (stone[i, k].StoneState == estoneState.BLACK) score += Eva_Score[i, k];
                 }
             }
             return score;
         }
-        else if (turn == GridManager.estoneState.WHITE)
+        else if (turn == estoneState.WHITE)
         {
             for (var i = 0; i < cols; i++)
             {
                 for (var k = 0; k < rows; k++)
                 {
-                    if (stone[i, k].StoneState ==
-GridManager.estoneState.WHITE) score += Eva_Score[i, k];
+                    if (stone[i, k].StoneState == estoneState.WHITE) score += Eva_Score[i, k];
                 }
             }
         }
@@ -62,7 +60,7 @@ GridManager.estoneState.WHITE) score += Eva_Score[i, k];
     /// <param name="stonemanager"></param>
     /// <param name="Myturn"></param>
     /// <returns></returns>
-    public int StoneCount(StoneColor[,] stonemanager, GridManager.estoneState Myturn)
+    public int StoneCount(StoneColor[,] stonemanager, estoneState Myturn)
     {
         var resultscore = 0;
 
@@ -86,12 +84,10 @@ GridManager.estoneState.WHITE) score += Eva_Score[i, k];
     /// <param name="stonemanager"></param>
     /// <param name="Myturn"></param>
     /// <returns></returns>
-    public bool All_Stone_Color_Count_Check(StoneColor[,] stonemanager, GridManager.estoneState nowturn)
+    public bool All_Stone_Color_Count_Check(StoneColor[,] stonemanager, estoneState nowturn)
     {
         bool result = true;
-
-        GridManager.estoneState notturn =
-            ((nowturn == GridManager.estoneState.BLACK) ? GridManager.estoneState.WHITE : GridManager.estoneState.BLACK);
+        estoneState notturn = ((nowturn == estoneState.BLACK) ? estoneState.WHITE : estoneState.BLACK);
 
         for (var i = 0; i < cols; i++)
         {
