@@ -18,15 +18,9 @@ public class Mypage_Result : MonoBehaviour
     /// <summary>
     /// PlayerPrefのスコアの引き継ぎ
     /// </summary>
-    private int Black_Win;
-
-    private int White_Win;
-
     private float Black_Percent;
 
     private float White_Percent;
-
-    private int BW_Result;
 
     [SerializeField]
     private Text _Text_Hitokoto;
