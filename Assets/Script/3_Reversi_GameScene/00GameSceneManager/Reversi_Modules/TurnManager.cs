@@ -47,9 +47,6 @@ public class TurnManager : MonoBehaviour
     /// <param name="stones"></param>
     public void TurnColorListGet(StoneState nowturn, List<Turnstone_c> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
     {
-        //ターン制御
-        bool CanTurnColor;
-
         StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
         for (var i = 0; i < Turn_CHECK_Z.Length; i++)
@@ -63,8 +60,6 @@ public class TurnManager : MonoBehaviour
                     {
                         var z1 = i;
                         var x1 = k;
-
-                        CanTurnColor = false;
 
                         if (!stonecheck) list.Clear();
 
@@ -93,7 +88,6 @@ public class TurnManager : MonoBehaviour
                                 //EMPTYの位置をリストに保存
                                 list.Add(new Turnstone_c(z_plus, x_plus));
 
-                                CanTurnColor = true;
                                 break;
 
                             }//+2方向した位置がMyTurnと逆の色であれば検索をつづける
