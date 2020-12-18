@@ -5,25 +5,14 @@ using static GridManager;
 //ひっくり返す座標をリストに入れる
 public class TurnStone
 {
-    public int c_z;
-    public int c_x;
-
-    //ひっくり返したときのターンの保存
-    public StoneState ENEMY_;
+    public int c_z { get; }
+    public int c_x { get; }
 
     //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
     public TurnStone(int z, int x)
     {
         c_z = z;
         c_x = x;
-    }
-
-    //コンストラクタ・敵のUndoリスト生成
-    public TurnStone(int z, int x, StoneState ENEMY)
-    {
-        c_z = z;
-        c_x = x;
-        ENEMY_ = ENEMY;
     }
 }
 
@@ -170,7 +159,7 @@ public class TurnManager : MonoBehaviour
                     stones[canturn.c_z, canturn.c_x].StoneState = nowturn;
 
                     //敵AIリスト限定・元の手に戻せるようにひっくり返す座標を格納しておく
-                    if (enemyundo) undolist.Add(new TurnStone(canturn.c_z, canturn.c_x, nowturn));
+                    if (enemyundo) undolist.Add(new TurnStone(canturn.c_z, canturn.c_x));
                 }
             }
         }

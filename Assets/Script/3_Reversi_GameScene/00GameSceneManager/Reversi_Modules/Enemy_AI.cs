@@ -126,7 +126,7 @@ public class Enemy_AI : MonoBehaviour
                 }
             }
 
-            var u = new TurnStone(i.c_z, i.c_x, enemyStone);
+            var u = new TurnStone(i.c_z, i.c_x);
             Backstone(nowturn, LEV3_Undoist, stones, u, field);
         }
 
