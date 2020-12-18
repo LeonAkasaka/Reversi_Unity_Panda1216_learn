@@ -61,13 +61,13 @@ public class TurnManager : MonoBehaviour
                             var x_plus = x1 + Turn_CHECK_X[p];
 
                             //現在の座標位置を+1方向した位置が盤外だったらbreak
-                            if (!(x1 >= 0 && x1 < rows && z1 >= 0 && z1 < cols)) break;
+                            if (!(x1 >= 0 && x1 < Rows && z1 >= 0 && z1 < Cols)) break;
 
                             //現在の座標位置を+1方向した位置の石の状態がMyTurnと同じ色であればbreak
                             if (stones[z1, x1].StoneState == nowturn) break;
 
                             //現在の座標位置を+2方向した位置が盤外だったらbreak
-                            if (!(x_plus >= 0 && x_plus < rows && z_plus >= 0 && z_plus < cols)) break;
+                            if (!(x_plus >= 0 && x_plus < Rows && z_plus >= 0 && z_plus < Cols)) break;
 
                             //現在の座標位置を+2方向した位置の石の状態がEMPTYだったら
                             if (stones[z1, x1].StoneState == enemyStone && stones[z_plus, x_plus].StoneState == StoneState.Empty)
@@ -130,7 +130,7 @@ public class TurnManager : MonoBehaviour
                 stonex += Turn_CHECK_X[i];
 
                 //座標がxが0以下で、8より大きかったらwhileからbreakする
-                if (!(stonex >= 0 && stonex < rows && stonez >= 0 && stonez < cols)) break;
+                if (!(stonex >= 0 && stonex < Rows && stonez >= 0 && stonez < Cols)) break;
 
                 //もし、enemystoneがあったらリストに格納する
                 if (stones[stonez, stonex].StoneState == enemyStone)

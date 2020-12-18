@@ -47,11 +47,11 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject _Canvas;
 
-    private StoneColor[,] _StoneManager = new StoneColor[cols, rows];
+    private StoneColor[,] _StoneManager = new StoneColor[Cols, Rows];
 
     //8*8生成用
-    public static int cols { get; } = 8;
-    public static int rows { get; } = 8;
+    public static int Cols { get; } = 8;
+    public static int Rows { get; } = 8;
 
 
     /// <summary>
@@ -60,7 +60,7 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject _FieldPrefab;
 
-    private Field[,] _FieldManager = new Field[cols, rows];
+    private Field[,] _FieldManager = new Field[Cols, Rows];
 
     /// <summary>
     /// 石のターン用
@@ -127,9 +127,9 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void Grid_Prefab_Module_Make()
     {
-        for (var i = 0; i < cols; i++)
+        for (var i = 0; i < Cols; i++)
         {
-            for (var k = 0; k < rows; k++)
+            for (var k = 0; k < Rows; k++)
             {
                 //石の生成
                 var stone = Instantiate(_StonePrefab);
@@ -219,7 +219,7 @@ public class GridManager : MonoBehaviour
                 if (_StoneManager[z, x].StoneState == StoneState.CanTurn)
                 {
                     //盤内であれば
-                    if (x >= 0 && x < rows && z >= 0 && z < cols)
+                    if (x >= 0 && x < Rows && z >= 0 && z < Cols)
                     {
                         //タップ座標の石を置く
                         _StoneManager[z, x].StoneState = GameScene_Controller.Instance.MyTurn;
@@ -407,10 +407,10 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void Reset_Color()
     {
-        for (var i = 0; i < cols; i++)
+        for (var i = 0; i < Cols; i++)
         {
             //石の配置
-            for (var k = 0; k < rows; k++)
+            for (var k = 0; k < Rows; k++)
             {
                 _StoneManager[i, k].StoneColor_Reset();
                 _FieldManager[i, k].GetFieldStone = FirldState.NotTurn;
@@ -438,7 +438,7 @@ public class GridManager : MonoBehaviour
 
         var score = Player_Stone_Count + CPU_Stone_Count;
 
-        if (score >= cols * rows)
+        if (score >= Cols * Rows)
         {
             Debug.Log("試合終了フラグ");
 
@@ -518,10 +518,10 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void funcWHITE()
     {
-        for (var i = 0; i < cols; i++)
+        for (var i = 0; i < Cols; i++)
         {
             //石の配置
-            for (var k = 0; k < rows; k++)
+            for (var k = 0; k < Rows; k++)
             {
                 if (k % 2 == 0)
                 {

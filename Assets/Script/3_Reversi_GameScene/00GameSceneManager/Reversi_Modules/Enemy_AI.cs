@@ -170,9 +170,9 @@ public class Enemy_AI : MonoBehaviour
     {
         CanTurnList.Clear();
 
-        for (var i = 0; i < GridManager.cols; i++)
+        for (var i = 0; i < GridManager.Cols; i++)
         {
-            for (var k = 0; k < GridManager.rows; k++)
+            for (var k = 0; k < GridManager.Rows; k++)
             {
                 if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new TurnStone(i, k));
             }
@@ -181,9 +181,9 @@ public class Enemy_AI : MonoBehaviour
 
     public void Enemy_Stone_Select_Check(List<TurnStone> CanTurnList, StoneColor[,] stones)
     {
-        for (var i = 0; i < GridManager.cols; i++)
+        for (var i = 0; i < GridManager.Cols; i++)
         {
-            for (var k = 0; k < GridManager.rows; k++)
+            for (var k = 0; k < GridManager.Rows; k++)
             {
                 if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new TurnStone(i, k));
             }
@@ -196,9 +196,9 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     public void Enemy_Reset_Color(StoneColor[,] stones)
     {
-        for (var i = 0; i < GridManager.cols; i++)
+        for (var i = 0; i < GridManager.Cols; i++)
         {
-            for (var k = 0; k < GridManager.rows; k++) { stones[i, k].StoneColor_Reset(); }
+            for (var k = 0; k < GridManager.Rows; k++) { stones[i, k].StoneColor_Reset(); }
         }
     }
 
@@ -208,9 +208,9 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     public void Enemy_Reset_Field(Field[,] field)
     {
-        for (var i = 0; i < GridManager.cols; i++)
+        for (var i = 0; i < GridManager.Cols; i++)
         {
-            for (var k = 0; k < GridManager.rows; k++) { field[i, k].Field_Reset(); }
+            for (var k = 0; k < GridManager.Rows; k++) { field[i, k].Field_Reset(); }
         }
     }
 }
