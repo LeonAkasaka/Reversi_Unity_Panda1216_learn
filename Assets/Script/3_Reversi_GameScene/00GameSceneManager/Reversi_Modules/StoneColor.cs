@@ -18,7 +18,6 @@ public class StoneColor : MonoBehaviour
             ChangeStoneColor();
         }
     }
-
     private StoneState _stoneState;
 
     private void ChangeStoneColor()

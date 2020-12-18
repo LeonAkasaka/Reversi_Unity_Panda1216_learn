@@ -3,7 +3,7 @@ using UnityEngine;
 using static GridManager;
 
 //ひっくり返す座標をリストに入れる
-public class TurnStone
+public struct TurnStone
 {
     public int Z { get; }
     public int X { get; }

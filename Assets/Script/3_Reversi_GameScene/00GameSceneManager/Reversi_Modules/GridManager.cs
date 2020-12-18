@@ -371,35 +371,33 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     public TurnStone Enemy_AI_Level_Get(LevelState level)
     {
-        TurnStone result = null;
-
         switch (level)
         {
             case LevelState.Level1:
-
-                result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
-                Debug.Log("レベル1");
-                break;
-
+                {
+                    var result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
+                    Debug.Log("レベル1");
+                    return result;
+                }
             case LevelState.Level2:
-
-                result = _Enemy_AI.LEVEL2_Return_Stone(_TurnColorList);
-                Debug.Log("レベル2");
-                break;
-
+                {
+                    var result = _Enemy_AI.LEVEL2_Return_Stone(_TurnColorList);
+                    Debug.Log("レベル2");
+                    return result;
+                }
             case LevelState.Level3:
-
-                result = _Enemy_AI.LEVEL3_Return_Stone(_TurnColorList, _StoneManager, _FieldManager, GameScene_Controller.Instance.MyTurn);
-                Debug.Log("レベル3");
-                break;
-
+                {
+                    var result = _Enemy_AI.LEVEL3_Return_Stone(_TurnColorList, _StoneManager, _FieldManager, GameScene_Controller.Instance.MyTurn);
+                    Debug.Log("レベル3");
+                    return result;
+                }
             default:
-                result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
-                Debug.Log("レベルが未選択エラー");
-                break;
+                {
+                    var result = _Enemy_AI.LEVEL1_Return_Stone(_TurnColorList);
+                    Debug.Log("レベルが未選択エラー");
+                    return result;
+                }
         }
-
-        return result;
     }
 
     /// <summary>
