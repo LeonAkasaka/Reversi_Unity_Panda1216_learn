@@ -3,7 +3,7 @@ using UnityEngine;
 using static GridManager;
 
 //ひっくり返す座標をリストに入れる
-public class Turnstone_c
+public class TurnStone
 {
     public int c_z;
     public int c_x;
@@ -12,14 +12,14 @@ public class Turnstone_c
     public StoneState ENEMY_;
 
     //コンストラクタ・もし、探索した方向に敵の色があったら、このリストに座標位置を入れる
-    public Turnstone_c(int z, int x)
+    public TurnStone(int z, int x)
     {
         c_z = z;
         c_x = x;
     }
 
     //コンストラクタ・敵のUndoリスト生成
-    public Turnstone_c(int z, int x, StoneState ENEMY)
+    public TurnStone(int z, int x, StoneState ENEMY)
     {
         c_z = z;
         c_x = x;
@@ -44,7 +44,7 @@ public class TurnManager : MonoBehaviour
     /// <param name="list"></param>
     /// <param name="fields"></param>
     /// <param name="stones"></param>
-    public void TurnColorListGet(StoneState nowturn, List<Turnstone_c> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
+    public void TurnColorListGet(StoneState nowturn, List<TurnStone> list, Field[,] fields, StoneColor[,] stones, bool stonecheck)
     {
         StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
@@ -85,7 +85,7 @@ public class TurnManager : MonoBehaviour
                             {
 
                                 //EMPTYの位置をリストに保存
-                                list.Add(new Turnstone_c(z_plus, x_plus));
+                                list.Add(new TurnStone(z_plus, x_plus));
 
                                 break;
 
@@ -117,7 +117,7 @@ public class TurnManager : MonoBehaviour
     /// <param name="list"></param>
     /// <param name="fields"></param>
     /// <param name="stones"></param>
-    public void TurnCheak(List<Turnstone_c> turnlist, List<Turnstone_c> undolist, StoneState nowturn, int x, int y, StoneColor[,] stones, bool enemyundo)
+    public void TurnCheak(List<TurnStone> turnlist, List<TurnStone> undolist, StoneState nowturn, int x, int y, StoneColor[,] stones, bool enemyundo)
     {
         bool CanTurn_;
 
@@ -146,7 +146,7 @@ public class TurnManager : MonoBehaviour
                 //もし、enemystoneがあったらリストに格納する
                 if (stones[stonez, stonex].StoneState == enemyStone)
                 {
-                    turnlist.Add(new Turnstone_c(stonez, stonex));
+                    turnlist.Add(new TurnStone(stonez, stonex));
 
                 }//MyTurnの色と一致する石であれば
                 else if (stones[stonez, stonex].StoneState == nowturn)
@@ -170,7 +170,7 @@ public class TurnManager : MonoBehaviour
                     stones[canturn.c_z, canturn.c_x].StoneState = nowturn;
 
                     //敵AIリスト限定・元の手に戻せるようにひっくり返す座標を格納しておく
-                    if (enemyundo) undolist.Add(new Turnstone_c(canturn.c_z, canturn.c_x, nowturn));
+                    if (enemyundo) undolist.Add(new TurnStone(canturn.c_z, canturn.c_x, nowturn));
                 }
             }
         }

@@ -18,16 +18,16 @@ public class Enemy_AI : MonoBehaviour
     private Field _FieldManager;
 
     //LEVEL3用（2手先読む）のターンリスト格納用
-    private List<Turnstone_c> LEV3_TurnList = new List<Turnstone_c>();
+    private List<TurnStone> LEV3_TurnList = new List<TurnStone>();
 
-    private List<Turnstone_c> LEV3_Undoist = new List<Turnstone_c>();
+    private List<TurnStone> LEV3_Undoist = new List<TurnStone>();
 
     /// <summary>
     /// LEVEL1:ターン可能リストからランダムで選択
     /// </summary>
     /// <param name="canputstone"></param>
     /// <returns></returns>
-    public Turnstone_c LEVEL1_Return_Stone(List<Turnstone_c> canputstone)
+    public TurnStone LEVEL1_Return_Stone(List<TurnStone> canputstone)
     {
         var rerult = canputstone[Random.Range(0, canputstone.Count)];
         return rerult;
@@ -38,9 +38,9 @@ public class Enemy_AI : MonoBehaviour
     /// </summary>
     /// <param name="canputstone"></param>
     /// <returns></returns>
-    public Turnstone_c LEVEL2_Return_Stone(List<Turnstone_c> canputstone)
+    public TurnStone LEVEL2_Return_Stone(List<TurnStone> canputstone)
     {
-        Turnstone_c rerult = canputstone[0];
+        TurnStone rerult = canputstone[0];
         var score = ScoreCount.Eva_Score[rerult.c_z, rerult.c_x];
 
         foreach (var i in canputstone)
@@ -64,12 +64,12 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     /// <param name="nowturn"></param>
     /// <returns></returns>
-    public Turnstone_c LEVEL3_Return_Stone(List<Turnstone_c> canputstone, StoneColor[,] stones, Field[,] field, StoneState nowturn)
+    public TurnStone LEVEL3_Return_Stone(List<TurnStone> canputstone, StoneColor[,] stones, Field[,] field, StoneState nowturn)
     {
         //反対の石
         StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
 
-        Turnstone_c rerult = canputstone[0];
+        TurnStone rerult = canputstone[0];
 
         //最も高い評価値を保存
         var resultScore = 0;
@@ -126,7 +126,7 @@ public class Enemy_AI : MonoBehaviour
                 }
             }
 
-            var u = new Turnstone_c(i.c_z, i.c_x, enemyStone);
+            var u = new TurnStone(i.c_z, i.c_x, enemyStone);
             Backstone(nowturn, LEV3_Undoist, stones, u, field);
         }
 
@@ -142,7 +142,7 @@ public class Enemy_AI : MonoBehaviour
     /// <param name="stones"></param>
     /// <param name="undoxy"></param>
     /// <param name="field"></param>
-    public void Backstone(StoneState nowturn, List<Turnstone_c> undolist, StoneColor[,] stones, Turnstone_c undoxy, Field[,] field)
+    public void Backstone(StoneState nowturn, List<TurnStone> undolist, StoneColor[,] stones, TurnStone undoxy, Field[,] field)
     {
         //反対のターン情報を変数に代入する
         StoneState enemyStone = ((nowturn == StoneState.Black) ? StoneState.White : StoneState.Black);
@@ -166,7 +166,7 @@ public class Enemy_AI : MonoBehaviour
     /// </summary>
     /// <param name="CanTurnList"></param>
     /// <param name="stones"></param>
-    public void Enemy_Stone_Select(List<Turnstone_c> CanTurnList, StoneColor[,] stones)
+    public void Enemy_Stone_Select(List<TurnStone> CanTurnList, StoneColor[,] stones)
     {
         CanTurnList.Clear();
 
@@ -174,18 +174,18 @@ public class Enemy_AI : MonoBehaviour
         {
             for (var k = 0; k < GridManager.rows; k++)
             {
-                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new Turnstone_c(i, k));
+                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new TurnStone(i, k));
             }
         }
     }
 
-    public void Enemy_Stone_Select_Check(List<Turnstone_c> CanTurnList, StoneColor[,] stones)
+    public void Enemy_Stone_Select_Check(List<TurnStone> CanTurnList, StoneColor[,] stones)
     {
         for (var i = 0; i < GridManager.cols; i++)
         {
             for (var k = 0; k < GridManager.rows; k++)
             {
-                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new Turnstone_c(i, k));
+                if (stones[i, k].StoneState == StoneState.CanTurn) CanTurnList.Add(new TurnStone(i, k));
             }
         }
     }

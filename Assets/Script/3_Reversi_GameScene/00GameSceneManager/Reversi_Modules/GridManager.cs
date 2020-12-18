@@ -73,17 +73,17 @@ public class GridManager : MonoBehaviour
     private int z;
 
     //探索時にターンできる石を格納する
-    private List<Turnstone_c> _TurnList = new List<Turnstone_c>();
+    private List<TurnStone> _TurnList = new List<TurnStone>();
 
     //ターン可能な石を格納する
-    private List<Turnstone_c> _TurnColorList = new List<Turnstone_c>();
+    private List<TurnStone> _TurnColorList = new List<TurnStone>();
 
     //CPU　AI用　石の状態を1手先戻すために必要な座標情報を格納する
-    private List<Turnstone_c> _UndoList = new List<Turnstone_c>();
+    private List<TurnStone> _UndoList = new List<TurnStone>();
 
 
-    List<Turnstone_c> player_puttingcancheck = new List<Turnstone_c>();
-    List<Turnstone_c> CPU_puttingcancheck = new List<Turnstone_c>();
+    List<TurnStone> player_puttingcancheck = new List<TurnStone>();
+    List<TurnStone> CPU_puttingcancheck = new List<TurnStone>();
 
 
     //ターン開始際の石のターンする際の演出のための非同期処理管理
@@ -369,9 +369,9 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="level"></param>
     /// <returns></returns>
-    public Turnstone_c Enemy_AI_Level_Get(LevelState level)
+    public TurnStone Enemy_AI_Level_Get(LevelState level)
     {
-        Turnstone_c result = null;
+        TurnStone result = null;
 
         switch (level)
         {
